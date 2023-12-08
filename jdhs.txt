@@ -1,0 +1,42 @@
+using System;
+using System.Web.UI.WebControls;
+
+public partial class _Default : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            // Create a DataTable with hard-coded data
+            var dataTable = new System.Data.DataTable();
+            dataTable.Columns.Add("Column1");
+            dataTable.Columns.Add("Column2");
+
+            // Add rows with hard-coded text
+            dataTable.Rows.Add("Item 1-1", "Item 1-2");
+            dataTable.Rows.Add("Item 2-1", "Item 2-2");
+            dataTable.Rows.Add("Item 3-1", "Item 3-2");
+
+            // Bind the DataTable to the GridView
+            GridView1.DataSource = dataTable;
+            GridView1.DataBind();
+        }
+    }
+
+    protected void GridView1_RowCreated(object sender, GridViewRowEventArgs e)
+    {
+        // Check if the row is a header row
+        if (e.Row.RowType == DataControlRowType.Header)
+        {
+            // Create a custom header row with one cell spanning all columns
+            GridViewRow headerRow = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Normal);
+            TableCell headerCell = new TableCell();
+            headerCell.Text = "Custom Header Text";
+            headerCell.ColumnSpan = GridView1.Columns.Count; // Span all columns
+            headerRow.Cells.Add(headerCell);
+
+            // Add the custom header row to the GridView
+            ((GridView)sender).Controls[0].Controls.AddAt(0, headerRow);
+        }
+    }
+}
